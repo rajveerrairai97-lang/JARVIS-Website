@@ -1,0 +1,2388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="JARVIS — a local-first personal productivity assistant built by Rajveer Rai."
+    >
+
+    <meta
+        name="keywords"
+        content="JARVIS, reminder assistant, productivity, local assistant, Rajveer Rai, Windows"
+    >
+
+    <meta
+        name="author"
+        content="Rajveer Rai"
+    >
+
+    <meta
+        name="theme-color"
+        content="#02060b"
+    >
+
+    <title>JARVIS — Remember Everything.</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+
+    <!-- =====================================================
+         JARVIS CORE — NEW REACTOR ANIMATION
+         Only the reactor animation is changed.
+    ====================================================== -->
+
+    <style>
+
+        .jarvis-reactor {
+            width: 360px;
+            height: 360px;
+
+            position: relative;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            isolation: isolate;
+        }
+
+
+        /* =================================================
+           CENTRAL ATMOSPHERIC GLOW
+        ================================================== */
+
+        .jarvis-reactor::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 155px;
+            height: 155px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,0.98) 0%,
+                    rgba(0,235,255,0.95) 9%,
+                    rgba(0,190,255,0.72) 25%,
+                    rgba(0,150,255,0.25) 48%,
+                    transparent 72%
+                );
+
+            filter: blur(3px);
+
+            box-shadow:
+                0 0 25px rgba(0,220,255,0.95),
+                0 0 55px rgba(0,200,255,0.75),
+                0 0 100px rgba(0,170,255,0.42);
+
+            animation:
+                reactorPulse 2.2s ease-in-out infinite;
+
+            z-index: 0;
+        }
+
+
+        /* =================================================
+           OUTER ENERGY AURA
+        ================================================== */
+
+        .reactor-aura {
+
+            position: absolute;
+
+            width: 245px;
+            height: 245px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(0,220,255,0.16),
+                    transparent 67%
+                );
+
+            filter: blur(8px);
+
+            animation:
+                auraPulse 3s ease-in-out infinite;
+
+            z-index: 0;
+        }
+
+
+        /* =================================================
+           RING BASE
+        ================================================== */
+
+        .reactor-ring {
+
+            position: absolute;
+
+            border-radius: 50%;
+
+            pointer-events: none;
+        }
+
+
+        /* =================================================
+           OUTER RING
+        ================================================== */
+
+        .reactor-ring-outer {
+
+            width: 310px;
+            height: 310px;
+
+            border:
+                1px solid
+                rgba(0,220,255,0.30);
+
+            box-shadow:
+                0 0 15px rgba(0,220,255,0.08),
+                inset 0 0 20px rgba(0,220,255,0.04);
+
+            animation:
+                reactorRotate 18s linear infinite;
+        }
+
+
+        .reactor-ring-outer::before {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 10px;
+
+            border-radius: 50%;
+
+            border:
+                1px dashed
+                rgba(0,220,255,0.28);
+
+            animation:
+                reactorRotateReverse 13s linear infinite;
+        }
+
+
+        /* =================================================
+           SECOND RING
+        ================================================== */
+
+        .reactor-ring-middle {
+
+            width: 245px;
+            height: 245px;
+
+            border:
+                1px solid
+                rgba(0,220,255,0.42);
+
+            box-shadow:
+                0 0 20px rgba(0,220,255,0.10),
+                inset 0 0 20px rgba(0,220,255,0.06);
+
+            animation:
+                reactorRotateReverse 11s linear infinite;
+        }
+
+
+        .reactor-ring-middle::after {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 17px;
+
+            border-radius: 50%;
+
+            border:
+                1px dotted
+                rgba(0,220,255,0.24);
+        }
+
+
+        /* =================================================
+           INNER RING
+        ================================================== */
+
+        .reactor-ring-inner {
+
+            width: 180px;
+            height: 180px;
+
+            border:
+                1px solid
+                rgba(0,220,255,0.58);
+
+            box-shadow:
+                0 0 25px rgba(0,220,255,0.13),
+                inset 0 0 25px rgba(0,220,255,0.08);
+
+            animation:
+                reactorRotate 8s linear infinite;
+        }
+
+
+        /* =================================================
+           ENERGY ARC
+        ================================================== */
+
+        .reactor-arc {
+
+            position: absolute;
+
+            width: 215px;
+            height: 215px;
+
+            border-radius: 50%;
+
+            border:
+                2px solid transparent;
+
+            border-top-color:
+                rgba(0,235,255,0.95);
+
+            border-right-color:
+                rgba(0,190,255,0.30);
+
+            filter:
+                drop-shadow(
+                    0 0 7px
+                    rgba(0,220,255,0.8)
+                );
+
+            animation:
+                reactorRotate 4.5s linear infinite;
+        }
+
+
+        /* =================================================
+           CORE HOUSING
+        ================================================== */
+
+        .reactor-core-housing {
+
+            width: 105px;
+            height: 105px;
+
+            position: relative;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,1) 0%,
+                    rgba(180,250,255,1) 5%,
+                    rgba(0,220,255,0.98) 16%,
+                    rgba(0,170,255,0.88) 35%,
+                    rgba(0,100,180,0.38) 62%,
+                    rgba(0,50,100,0.08) 78%,
+                    transparent 80%
+                );
+
+            box-shadow:
+                0 0 15px rgba(255,255,255,0.95),
+                0 0 30px rgba(0,235,255,0.95),
+                0 0 60px rgba(0,190,255,0.85),
+                0 0 100px rgba(0,130,255,0.38);
+
+            animation:
+                coreEnergy 2s ease-in-out infinite;
+
+            z-index: 5;
+        }
+
+
+        /* =================================================
+           CORE WHITE CENTER
+        ================================================== */
+
+        .reactor-core-light {
+
+            position: absolute;
+
+            width: 34px;
+            height: 34px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    #ffffff 0%,
+                    #ffffff 38%,
+                    rgba(220,255,255,0.95) 55%,
+                    rgba(0,220,255,0.25) 78%,
+                    transparent 100%
+                );
+
+            box-shadow:
+                0 0 18px #ffffff,
+                0 0 35px rgba(0,235,255,1);
+
+            animation:
+                coreFlash 1.5s ease-in-out infinite;
+        }
+
+
+        /* =================================================
+           CORE J
+        ================================================== */
+
+        .reactor-letter {
+
+            position: relative;
+
+            z-index: 8;
+
+            color:
+                rgba(255,255,255,0.88);
+
+            font-family:
+                "Courier New",
+                monospace;
+
+            font-size: 17px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.08em;
+
+            text-shadow:
+                0 0 8px #ffffff,
+                0 0 18px rgba(0,220,255,1);
+
+            opacity: 0.82;
+        }
+
+
+        /* =================================================
+           ORBITING NODES
+        ================================================== */
+
+        .reactor-node {
+
+            position: absolute;
+
+            width: 6px;
+            height: 6px;
+
+            border-radius: 50%;
+
+            background:
+                #7ef7ff;
+
+            box-shadow:
+                0 0 7px #00dcff,
+                0 0 15px rgba(0,220,255,0.9);
+
+            z-index: 10;
+        }
+
+
+        .reactor-node-1 {
+
+            top: 25px;
+            left: 50%;
+
+            transform:
+                translateX(-50%);
+
+            animation:
+                nodePulse 1.8s ease-in-out infinite;
+        }
+
+
+        .reactor-node-2 {
+
+            right: 38px;
+            top: 50%;
+
+            transform:
+                translateY(-50%);
+
+            animation:
+                nodePulse 2.1s ease-in-out infinite 0.3s;
+        }
+
+
+        .reactor-node-3 {
+
+            bottom: 25px;
+            left: 50%;
+
+            transform:
+                translateX(-50%);
+
+            animation:
+                nodePulse 1.7s ease-in-out infinite 0.6s;
+        }
+
+
+        .reactor-node-4 {
+
+            left: 38px;
+            top: 50%;
+
+            transform:
+                translateY(-50%);
+
+            animation:
+                nodePulse 2s ease-in-out infinite 0.9s;
+        }
+
+
+        /* =================================================
+           CORE LABEL
+        ================================================== */
+
+        .reactor-label {
+
+            position: absolute;
+
+            bottom: -25px;
+
+            left: 50%;
+
+            transform:
+                translateX(-50%);
+
+            text-align: center;
+
+            color:
+                rgba(0,220,255,0.48);
+
+            font-family:
+                "Courier New",
+                monospace;
+
+            font-size: 9px;
+
+            letter-spacing: 0.45em;
+
+            white-space: nowrap;
+
+            text-shadow:
+                0 0 8px
+                rgba(0,220,255,0.45);
+        }
+
+
+        .reactor-label strong {
+
+            display: block;
+
+            margin-top: 5px;
+
+            color:
+                rgba(0,220,255,0.88);
+
+            font-size: 10px;
+
+            letter-spacing: 0.35em;
+        }
+
+
+        /* =================================================
+           ANIMATIONS
+        ================================================== */
+
+        @keyframes reactorRotate {
+
+            from {
+                transform:
+                    rotate(0deg);
+            }
+
+            to {
+                transform:
+                    rotate(360deg);
+            }
+
+        }
+
+
+        @keyframes reactorRotateReverse {
+
+            from {
+                transform:
+                    rotate(360deg);
+            }
+
+            to {
+                transform:
+                    rotate(0deg);
+            }
+
+        }
+
+
+        @keyframes reactorPulse {
+
+            0%,
+            100% {
+
+                transform:
+                    scale(0.92);
+
+                opacity:
+                    0.78;
+            }
+
+            50% {
+
+                transform:
+                    scale(1.08);
+
+                opacity:
+                    1;
+            }
+
+        }
+
+
+        @keyframes auraPulse {
+
+            0%,
+            100% {
+
+                transform:
+                    scale(0.94);
+
+                opacity:
+                    0.55;
+            }
+
+            50% {
+
+                transform:
+                    scale(1.08);
+
+                opacity:
+                    0.95;
+            }
+
+        }
+
+
+        @keyframes coreEnergy {
+
+            0%,
+            100% {
+
+                transform:
+                    scale(0.92);
+
+                box-shadow:
+                    0 0 15px rgba(255,255,255,0.9),
+                    0 0 30px rgba(0,235,255,0.85),
+                    0 0 60px rgba(0,190,255,0.65);
+            }
+
+            50% {
+
+                transform:
+                    scale(1.08);
+
+                box-shadow:
+                    0 0 20px rgba(255,255,255,1),
+                    0 0 45px rgba(0,235,255,1),
+                    0 0 85px rgba(0,190,255,0.9);
+            }
+
+        }
+
+
+        @keyframes coreFlash {
+
+            0%,
+            100% {
+
+                transform:
+                    scale(0.88);
+
+                opacity:
+                    0.88;
+            }
+
+            50% {
+
+                transform:
+                    scale(1.18);
+
+                opacity:
+                    1;
+            }
+
+        }
+
+
+        @keyframes nodePulse {
+
+            0%,
+            100% {
+
+                transform:
+                    scale(0.75);
+
+                opacity:
+                    0.45;
+            }
+
+            50% {
+
+                transform:
+                    scale(1.35);
+
+                opacity:
+                    1;
+            }
+
+        }
+
+
+        /* =================================================
+           REACTOR RESPONSIVE
+        ================================================== */
+
+        @media (max-width: 700px) {
+
+            .jarvis-reactor {
+
+                width: 300px;
+                height: 300px;
+
+            }
+
+            .reactor-ring-outer {
+
+                width: 255px;
+                height: 255px;
+
+            }
+
+            .reactor-ring-middle {
+
+                width: 205px;
+                height: 205px;
+
+            }
+
+            .reactor-ring-inner {
+
+                width: 150px;
+                height: 150px;
+
+            }
+
+            .reactor-arc {
+
+                width: 180px;
+                height: 180px;
+
+            }
+
+        }
+
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .jarvis-reactor *,
+            .jarvis-reactor::before {
+
+                animation:
+                    none !important;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         BACKGROUND SYSTEM
+    ====================================================== -->
+
+    <div class="grid"></div>
+
+    <div class="noise"></div>
+
+    <div class="ambient ambient-one"></div>
+
+    <div class="ambient ambient-two"></div>
+
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header
+        class="navbar"
+        id="navbar"
+    >
+
+        <div class="nav-brand">
+
+            <div class="mini-reactor">
+                ◈
+            </div>
+
+            <span>
+                JARVIS
+            </span>
+
+        </div>
+
+
+        <nav
+            class="nav-links"
+            id="navLinks"
+        >
+
+            <a href="#features">
+                FEATURES
+            </a>
+
+            <a href="#privacy">
+                PRIVACY
+            </a>
+
+            <a href="#about">
+                ABOUT
+            </a>
+
+            <a href="#install">
+                INSTALL
+            </a>
+
+            <a
+                href="#download"
+                class="nav-button"
+            >
+                GET JARVIS
+            </a>
+
+        </nav>
+
+
+        <button
+            class="menu-button"
+            id="menuButton"
+            aria-label="Open navigation"
+            aria-expanded="false"
+        >
+
+            ☰
+
+        </button>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main>
+
+
+        <!-- =================================================
+             HERO
+        ================================================== -->
+
+        <section class="hero">
+
+            <div class="hero-content">
+
+
+                <div class="live-status">
+
+                    <span class="status-dot"></span>
+
+                    JARVIS SYSTEM ONLINE
+
+                </div>
+
+
+                <div class="hero-time">
+
+                    <span>
+                        INDIA / IST
+                    </span>
+
+                    <strong id="heroClock">
+                        --:--
+                    </strong>
+
+                </div>
+
+
+                <h1>
+
+                    Remember
+                    <span>everything.</span>
+
+                </h1>
+
+
+                <p class="hero-description">
+
+                    A personal productivity assistant designed
+                    to remember your tasks, deadlines and routines
+                    — quietly, locally and intelligently.
+
+                </p>
+
+
+                <div class="hero-actions">
+
+                    <a
+                        href="#download"
+                        class="main-button"
+                    >
+
+                        <span>
+                            ◈
+                        </span>
+
+                        GET JARVIS
+
+                    </a>
+
+
+                    <a
+                        href="#features"
+                        class="outline-button"
+                    >
+
+                        EXPLORE SYSTEM
+
+                    </a>
+
+                </div>
+
+
+                <div class="hero-details">
+
+                    <span>
+                        ● LOCAL-FIRST
+                    </span>
+
+                    <span>
+                        ● NO API KEY
+                    </span>
+
+                    <span>
+                        ● WINDOWS
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 JARVIS CORE — NEW ANIMATED REACTOR
+            ================================================== -->
+
+            <div class="system-panel">
+
+                <div class="panel-header">
+
+                    <span>
+                        JARVIS_CORE
+                    </span>
+
+                    <span>
+                        ONLINE
+                    </span>
+
+                </div>
+
+
+                <div class="core-container">
+
+                    <div class="jarvis-reactor">
+
+                        <div class="reactor-aura"></div>
+
+
+                        <div
+                            class="reactor-ring reactor-ring-outer"
+                        ></div>
+
+
+                        <div
+                            class="reactor-ring reactor-ring-middle"
+                        ></div>
+
+
+                        <div
+                            class="reactor-ring reactor-ring-inner"
+                        ></div>
+
+
+                        <div class="reactor-arc"></div>
+
+
+                        <span
+                            class="reactor-node reactor-node-1"
+                        ></span>
+
+                        <span
+                            class="reactor-node reactor-node-2"
+                        ></span>
+
+                        <span
+                            class="reactor-node reactor-node-3"
+                        ></span>
+
+                        <span
+                            class="reactor-node reactor-node-4"
+                        ></span>
+
+
+                        <div class="reactor-core-housing">
+
+                            <div class="reactor-core-light"></div>
+
+                            <span class="reactor-letter">
+                                J
+                            </span>
+
+                        </div>
+
+
+                        <div class="reactor-label">
+
+                            J A R V I S
+
+                            <strong>
+                                C O R E
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="core-status">
+
+                    <span>
+                        CORE STATUS
+                    </span>
+
+                    <strong>
+                        OPERATIONAL
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             SYSTEM STRIP
+        ================================================== -->
+
+        <section class="system-strip">
+
+            <div>
+
+                <span>
+                    01
+                </span>
+
+                24/7 MONITORING
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    02
+                </span>
+
+                INDIA / IST
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    03
+                </span>
+
+                LOCAL ENGINE
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    04
+                </span>
+
+                USER CONTROLLED
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             FEATURES
+        ================================================== -->
+
+        <section
+            class="section"
+            id="features"
+        >
+
+            <div class="section-heading">
+
+                <span>
+                    01 / CAPABILITIES
+                </span>
+
+                <h2>
+                    Built to remember.
+                </h2>
+
+                <p>
+                    A focused set of tools designed to make
+                    remembering the important stuff effortless.
+                </p>
+
+            </div>
+
+
+            <div class="feature-layout">
+
+
+                <article class="feature feature-large">
+
+                    <div class="feature-number">
+                        01
+                    </div>
+
+                    <div class="feature-icon">
+                        ◷
+                    </div>
+
+                    <h3>
+                        Smart Reminders
+                    </h3>
+
+                    <p>
+                        Create reminders that appear when
+                        you actually need them.
+                    </p>
+
+                </article>
+
+
+
+                <article class="feature">
+
+                    <div class="feature-number">
+                        02
+                    </div>
+
+                    <div class="feature-icon">
+                        ◉
+                    </div>
+
+                    <h3>
+                        Pattern Learning
+                    </h3>
+
+                    <p>
+                        JARVIS can learn useful patterns
+                        from your routine.
+                    </p>
+
+                </article>
+
+
+
+                <article class="feature">
+
+                    <div class="feature-number">
+                        03
+                    </div>
+
+                    <div class="feature-icon">
+                        ⏱
+                    </div>
+
+                    <h3>
+                        Deadline Tracking
+                    </h3>
+
+                    <p>
+                        Keep important deadlines visible
+                        before they become problems.
+                    </p>
+
+                </article>
+
+
+
+                <article class="feature feature-wide">
+
+                    <div class="feature-number">
+                        04
+                    </div>
+
+                    <div class="feature-icon">
+                        🔊
+                    </div>
+
+                    <h3>
+                        Voice Alerts
+                    </h3>
+
+                    <p>
+                        Notifications can speak to you,
+                        turning reminders into an actual
+                        assistant experience.
+                    </p>
+
+                </article>
+
+
+
+                <article class="feature">
+
+                    <div class="feature-number">
+                        05
+                    </div>
+
+                    <div class="feature-icon">
+                        ◇
+                    </div>
+
+                    <h3>
+                        JARVIS Personality
+                    </h3>
+
+                    <p>
+                        A little more personality than
+                        another boring reminder app.
+                    </p>
+
+                </article>
+
+
+
+                <article class="feature">
+
+                    <div class="feature-number">
+                        06
+                    </div>
+
+                    <div class="feature-icon">
+                        ◎
+                    </div>
+
+                    <h3>
+                        IST Native
+                    </h3>
+
+                    <p>
+                        Designed around Indian Standard Time
+                        for accurate local scheduling.
+                    </p>
+
+                </article>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             PRIVACY
+        ================================================== -->
+
+        <section
+            class="section privacy-section"
+            id="privacy"
+        >
+
+            <div class="section-heading">
+
+                <span>
+                    02 / PRIVACY
+                </span>
+
+                <h2>
+                    Your data stays yours.
+                </h2>
+
+                <p>
+                    JARVIS is designed around local-first
+                    operation and user control.
+                </p>
+
+            </div>
+
+
+            <div class="privacy-grid">
+
+
+                <article class="privacy-card privacy-main">
+
+                    <div class="privacy-symbol">
+                        🔒
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Local-First Architecture
+                        </h3>
+
+                        <p>
+
+                            JARVIS is designed to operate locally
+                            on your computer. Your reminders,
+                            routines and personal information are
+                            intended to stay on your machine rather
+                            than being uploaded to a JARVIS server.
+
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+
+                <article class="privacy-card">
+
+                    <span class="privacy-index">
+                        01
+                    </span>
+
+                    <h3>
+                        No Account Required
+                    </h3>
+
+                    <p>
+                        No JARVIS account is required for the
+                        basic local reminder system.
+                    </p>
+
+                </article>
+
+
+
+                <article class="privacy-card">
+
+                    <span class="privacy-index">
+                        02
+                    </span>
+
+                    <h3>
+                        No Forced Cloud
+                    </h3>
+
+                    <p>
+                        The core reminder experience does not
+                        depend on storing your personal reminders
+                        in a cloud database.
+                    </p>
+
+                </article>
+
+
+
+                <article class="privacy-card">
+
+                    <span class="privacy-index">
+                        03
+                    </span>
+
+                    <h3>
+                        You Control Your Data
+                    </h3>
+
+                    <p>
+                        Your local files remain accessible to you,
+                        giving you control over your own information.
+                    </p>
+
+                </article>
+
+
+            </div>
+
+
+            <div class="privacy-warning">
+
+                <span>
+                    ⓘ
+                </span>
+
+                <p>
+                    JARVIS is a local-first project. Always review
+                    the code and dependencies yourself before using
+                    any software with sensitive information.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             SYSTEM FLOW
+        ================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <span>
+                    03 / HOW IT WORKS
+                </span>
+
+                <h2>
+                    From thought to reminder.
+                </h2>
+
+                <p>
+                    JARVIS turns a simple task into a scheduled
+                    notification when it matters.
+                </p>
+
+            </div>
+
+
+            <div class="system-flow">
+
+
+                <div class="flow-step">
+
+                    <span>
+                        01
+                    </span>
+
+                    <h3>
+                        YOU
+                    </h3>
+
+                    <p>
+                        Add a task,
+                        deadline or reminder.
+                    </p>
+
+                </div>
+
+
+                <div class="flow-line"></div>
+
+
+                <div class="flow-step">
+
+                    <span>
+                        02
+                    </span>
+
+                    <h3>
+                        JARVIS
+                    </h3>
+
+                    <p>
+                        Processes and schedules
+                        the information locally.
+                    </p>
+
+                </div>
+
+
+                <div class="flow-line"></div>
+
+
+                <div class="flow-step">
+
+                    <span>
+                        03
+                    </span>
+
+                    <h3>
+                        MOMENT
+                    </h3>
+
+                    <p>
+                        JARVIS alerts you
+                        at the right time.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             LIVE STATS
+        ================================================== -->
+
+        <section
+            class="section stats-section"
+            id="stats"
+        >
+
+            <div class="section-heading">
+
+                <span>
+                    04 / JARVIS NETWORK
+                </span>
+
+                <h2>
+                    Growing with every deployment.
+                </h2>
+
+                <p>
+                    A small project today. A bigger system tomorrow.
+                </p>
+
+            </div>
+
+
+            <div class="stats-grid">
+
+
+                <div class="stat-card">
+
+                    <span class="stat-icon">
+                        ↓
+                    </span>
+
+                    <strong id="downloadCount">
+                        —
+                    </strong>
+
+                    <small>
+                        DOWNLOADS
+                    </small>
+
+                    <p>
+                        Total public installer downloads
+                    </p>
+
+                </div>
+
+
+
+                <div class="stat-card">
+
+                    <span class="stat-icon">
+                        ★
+                    </span>
+
+                    <strong id="ratingValue">
+                        —
+                    </strong>
+
+                    <small>
+                        USER RATING
+                    </small>
+
+                    <p>
+                        Community rating
+                    </p>
+
+                </div>
+
+
+
+                <div class="stat-card">
+
+                    <span class="stat-icon">
+                        ◉
+                    </span>
+
+                    <strong>
+                        LOCAL
+                    </strong>
+
+                    <small>
+                        ARCHITECTURE
+                    </small>
+
+                    <p>
+                        Your reminders stay on your machine
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="rating-box">
+
+                <div>
+
+                    <span>
+                        ENJOYING JARVIS?
+                    </span>
+
+                    <h3>
+                        Rate the project.
+                    </h3>
+
+                </div>
+
+
+                <div
+                    class="rating-stars"
+                    id="ratingStars"
+                    aria-label="Rate JARVIS"
+                >
+
+                    <button data-rating="1">
+                        ★
+                    </button>
+
+                    <button data-rating="2">
+                        ★
+                    </button>
+
+                    <button data-rating="3">
+                        ★
+                    </button>
+
+                    <button data-rating="4">
+                        ★
+                    </button>
+
+                    <button data-rating="5">
+                        ★
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             TERMINAL DIAGNOSTICS
+        ================================================== -->
+
+        <section class="section">
+
+            <div class="terminal">
+
+
+                <div class="terminal-header">
+
+                    <span></span>
+
+                    <span></span>
+
+                    <span></span>
+
+                    <label>
+                        JARVIS_DIAGNOSTICS
+                    </label>
+
+                </div>
+
+
+                <div class="terminal-body">
+
+                    <p>
+                        <span>&gt;</span>
+                        Initializing JARVIS core...
+                    </p>
+
+                    <p>
+                        <span>&gt;</span>
+                        Checking local environment...
+                    </p>
+
+                    <p class="success">
+                        <span>&gt;</span>
+                        LOCAL ENGINE ........ ONLINE
+                    </p>
+
+                    <p class="success">
+                        <span>&gt;</span>
+                        PRIVACY MODE ........ ACTIVE
+                    </p>
+
+                    <p class="success">
+                        <span>&gt;</span>
+                        IST CLOCK ........... SYNCHRONIZED
+                    </p>
+
+                    <p>
+                        <span>&gt;</span>
+                        Waiting for user command<span class="cursor">_</span>
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             ABOUT
+        ================================================== -->
+
+        <section
+            class="section about"
+            id="about"
+        >
+
+            <div class="about-content">
+
+                <span>
+                    05 / THE PROJECT
+                </span>
+
+                <h2>
+                    Not just another
+                    reminder app.
+                </h2>
+
+                <p>
+
+                    JARVIS was created as an experiment in building
+                    a personal assistant that feels useful,
+                    lightweight and genuinely yours.
+
+                </p>
+
+                <p>
+
+                    No giant cloud infrastructure.
+                    No complicated setup.
+                    Just a local system designed to help you
+                    remember what matters.
+
+                </p>
+
+            </div>
+
+
+            <div class="about-visual">
+
+                <div class="about-core">
+                    J
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             CREATOR
+        ================================================== -->
+
+        <section class="section creator-section">
+
+            <div class="creator">
+
+
+                <div class="creator-info">
+
+                    <span class="creator-label">
+                        SYSTEM ARCHITECT
+                    </span>
+
+                    <h2 id="creatorName">
+                        RAJVEER RAI
+                    </h2>
+
+                    <p class="creator-role">
+                        Independent Developer
+                    </p>
+
+
+                    <div class="creator-meta">
+
+
+                        <span>
+
+                            <strong>
+                                CLASS
+                            </strong>
+
+                            10th
+
+                        </span>
+
+
+                        <span>
+
+                            <strong>
+                                STATUS
+                            </strong>
+
+                            STUDENT
+
+                        </span>
+
+
+                        <span>
+
+                            <strong>
+                                AGE
+                            </strong>
+
+                            16
+
+                        </span>
+
+
+                    </div>
+
+
+                    <div class="creator-location">
+
+                        🇮🇳 INDIA
+
+                        <span>
+                            •
+                        </span>
+
+                        BUILDING JARVIS
+
+                    </div>
+
+                </div>
+
+
+                <div class="creator-mark">
+
+                    <span>
+                        J
+                    </span>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             INSTALLATION
+        ================================================== -->
+
+        <section
+            class="section install-section"
+            id="install"
+        >
+
+
+            <div class="section-heading">
+
+                <span>
+                    06 / INSTALLATION PROTOCOL
+                </span>
+
+                <h2>
+                    Install <span>JARVIS.</span>
+                </h2>
+
+                <p>
+                    Download the Windows installer and bring
+                    your personal assistant online in minutes.
+                </p>
+
+            </div>
+
+
+
+            <!-- SECURITY NOTICE -->
+
+            <div class="install-warning">
+
+                <div class="warning-icon">
+                    ⚠
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        A quick note about Windows security
+                    </h3>
+
+                    <p>
+                        Because JARVIS is a new application, Microsoft
+                        Edge or Windows SmartScreen may display a warning
+                        saying that the installer isn't commonly downloaded
+                        or that Windows protected your PC.
+                    </p>
+
+                    <p>
+                        This can happen with new software that has not yet
+                        built up download reputation.
+                    </p>
+
+                    <p>
+                        <strong>
+                            Only continue when you downloaded
+                            JARVIS_Setup.exe from the official JARVIS website
+                            and the file is the installer you expected.
+                        </strong>
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- INSTALLATION STEPS -->
+
+            <div class="install-steps">
+
+
+                <!-- STEP 01 -->
+
+                <article class="install-step">
+
+                    <div class="step-number">
+                        01
+                    </div>
+
+
+                    <div class="step-content">
+
+                        <span class="step-label">
+                            DOWNLOAD
+                        </span>
+
+                        <h3>
+                            Download JARVIS
+                        </h3>
+
+                        <p>
+                            Click the
+                            <strong>
+                                DOWNLOAD JARVIS
+                            </strong>
+                            button at the bottom of this page.
+                        </p>
+
+                        <p>
+                            If Microsoft Edge says
+                            <strong>
+                                "JARVIS_Setup.exe isn't commonly downloaded"
+                            </strong>,
+                            open the
+                            <strong>...</strong>
+                            menu next to the download and select
+                            <strong>Keep</strong>.
+                        </p>
+
+                        <p>
+                            If Edge asks for another confirmation,
+                            select <strong>Keep anyway</strong> only
+                            after verifying that the download came from
+                            the official JARVIS website.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- STEP 02 -->
+
+                <article class="install-step">
+
+                    <div class="step-number">
+                        02
+                    </div>
+
+
+                    <div class="step-content">
+
+                        <span class="step-label">
+                            OPEN
+                        </span>
+
+                        <h3>
+                            Open the Installer
+                        </h3>
+
+                        <p>
+                            Open your Windows
+                            <strong>
+                                Downloads
+                            </strong>
+                            folder and locate:
+                        </p>
+
+
+                        <div class="code-chip">
+                            JARVIS_Setup.exe
+                        </div>
+
+
+                        <p>
+                            Double-click the installer to start
+                            the JARVIS setup wizard.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- STEP 03 -->
+
+                <article class="install-step">
+
+                    <div class="step-number">
+                        03
+                    </div>
+
+
+                    <div class="step-content">
+
+                        <span class="step-label">
+                            WINDOWS SECURITY
+                        </span>
+
+                        <h3>
+                            Windows SmartScreen
+                        </h3>
+
+                        <p>
+                            Windows may display:
+                        </p>
+
+
+                        <div class="code-chip">
+                            Windows protected your PC
+                        </div>
+
+
+                        <p>
+                            This may happen because the installer is new
+                            and has not yet built a strong reputation.
+                        </p>
+
+
+                        <p>
+                            If you have verified that the installer was
+                            downloaded from the official JARVIS website,
+                            select <strong>More info</strong> to view
+                            additional information and available options.
+                        </p>
+
+
+                        <p class="small-note">
+                            Never bypass a security warning for an installer
+                            from an unknown, unexpected or untrusted source.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- STEP 04 -->
+
+                <article class="install-step">
+
+                    <div class="step-number">
+                        04
+                    </div>
+
+
+                    <div class="step-content">
+
+                        <span class="step-label">
+                            INSTALL
+                        </span>
+
+                        <h3>
+                            Install JARVIS
+                        </h3>
+
+                        <p>
+                            Follow the setup wizard through the installation.
+                        </p>
+
+
+                        <div class="install-flow">
+
+                            <span>
+                                NEXT
+                            </span>
+
+                            <span>
+                                →
+                            </span>
+
+                            <span>
+                                INSTALL
+                            </span>
+
+                            <span>
+                                →
+                            </span>
+
+                            <span>
+                                FINISH
+                            </span>
+
+                        </div>
+
+
+                        <p>
+                            The installer will place JARVIS on your
+                            Windows system and create the required shortcuts.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- STEP 05 -->
+
+                <article class="install-step">
+
+                    <div class="step-number">
+                        05
+                    </div>
+
+
+                    <div class="step-content">
+
+                        <span class="step-label">
+                            LAUNCH
+                        </span>
+
+                        <h3>
+                            Bring JARVIS Online
+                        </h3>
+
+                        <p>
+                            Once installation is complete, launch JARVIS
+                            from the Desktop shortcut or the Windows
+                            Start Menu.
+                        </p>
+
+
+                        <div class="launch-status">
+
+                            <span class="status-dot"></span>
+
+                            JARVIS READY
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+            </div>
+
+
+
+            <!-- WHY THE WARNING EXISTS -->
+
+            <div class="install-explanation">
+
+                <div class="explanation-icon">
+                    ◈
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        Why does the warning appear?
+                    </h3>
+
+                    <p>
+                        Microsoft Defender SmartScreen uses reputation
+                        and other security signals to help identify
+                        potentially unwanted or dangerous downloads.
+                        A newly released application may have little or
+                        no download reputation yet, so a warning can
+                        appear even when the developer is distributing
+                        the application legitimately.
+                    </p>
+
+                    <p>
+                        As JARVIS becomes more widely downloaded and
+                        established, its reputation may change.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             DOWNLOAD / DEPLOYMENT
+        ================================================== -->
+
+        <section
+            class="download"
+            id="download"
+        >
+
+
+            <div class="download-orb"></div>
+
+
+            <div class="download-content">
+
+
+                <span>
+                    07 / DEPLOYMENT
+                </span>
+
+
+                <h2>
+                    Bring JARVIS online.
+                </h2>
+
+
+                <p>
+                    Download the Windows installer, complete the setup
+                    and start building your own personal assistant.
+                </p>
+
+
+                <div class="download-badges">
+
+                    <span>
+                        WINDOWS
+                    </span>
+
+                    <span>
+                        LOCAL-FIRST
+                    </span>
+
+                    <span>
+                        NO API KEY
+                    </span>
+
+                    <span>
+                        USER CONTROLLED
+                    </span>
+
+                </div>
+
+
+                <button
+                    class="download-button"
+                    id="downloadButton"
+                    type="button"
+                >
+
+                    <span>
+                        ◈
+                    </span>
+
+                    DOWNLOAD JARVIS
+
+                </button>
+
+
+                <small class="download-note">
+
+                    Windows installer
+                    •
+                    JARVIS_Setup.exe
+
+                </small>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             OPEN SOURCE / CONTROL
+        ================================================== -->
+
+        <section class="section ownership-section">
+
+            <div class="ownership-card">
+
+
+                <div class="ownership-icon">
+                    &lt;/&gt;
+                </div>
+
+
+                <div>
+
+                    <span>
+                        YOUR INSTALLATION. YOUR RULES.
+                    </span>
+
+
+                    <h2>
+                        Modify it. Learn from it. Make it yours.
+                    </h2>
+
+
+                    <p>
+                        JARVIS is built so you can inspect and
+                        modify the project after downloading it.
+                        Change the personality, reminders,
+                        interface and behaviour to fit your needs.
+                    </p>
+
+
+                    <div class="ownership-points">
+
+                        <span>
+                            ✓ ACCESS THE SOURCE
+                        </span>
+
+                        <span>
+                            ✓ MODIFY THE CODE
+                        </span>
+
+                        <span>
+                            ✓ BUILD YOUR OWN VERSION
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer>
+
+
+        <div>
+
+            <strong>
+                JARVIS
+            </strong>
+
+            <span>
+                Personal intelligence. Local by design.
+            </span>
+
+        </div>
+
+
+        <div>
+
+            ©
+
+            <span id="year"></span>
+
+            RAJVEER RAI
+
+        </div>
+
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script src="script.js"></script>
+
+
+</body>
+
+</html>
